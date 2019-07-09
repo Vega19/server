@@ -11,20 +11,20 @@ app.get('/',function (req, res) {
 
 app.get('/weather', function(req, res) {
   const city = req.query.city;
-  const weatherURL = 'http://api.apixu.com/v1/current.json?key=${apikey}&q=${city}';
+  const weatherURL = `http://api.apixu.com/v1/current.json?key=${apikey}&q=${city}`;
 
   request(weatherURL, function (error, response, body) {
     if (error) {
-      return res.status(500).send('Error');
+      return res.status(500).send(error);
     }
-    if (response == 200) {
-      return res.status(200);
+    if (response.statusCode) {
+      return res.status(response.statusCode).send(body);
     }
-    res.status(200).send(body);
+    res.status(response.statusCode).send(body);
   });
 });
 
-  app.listen(3000, function(error, response, body) {
+  app.listen(3001, function() {
     console.log('Server starts!');
   });
 
